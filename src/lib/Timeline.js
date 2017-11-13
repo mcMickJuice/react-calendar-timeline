@@ -756,11 +756,11 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   handleMouseDown = (e) => {
-    if (this.props.preventCanvasScroll) return
+    const { headerLabelGroupHeight, headerLabelHeight, preventCanvasScroll } = this.props
+    if (preventCanvasScroll) return
 
     const { topOffset } = this.state
     const { pageY } = e
-    const { headerLabelGroupHeight, headerLabelHeight } = this.props
     const headerHeight = headerLabelGroupHeight + headerLabelHeight
 
     if (pageY - topOffset > headerHeight && e.button === 0) {
@@ -778,8 +778,6 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   handleMouseUp = (e) => {
-    if (this.props.preventCanvasScroll) return
-
     const { dragStartPosition } = this.state
 
     if (Math.abs(dragStartPosition - e.pageX) <= this.props.clickTolerance) {
