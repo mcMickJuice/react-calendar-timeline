@@ -73,6 +73,7 @@ export default class ReactCalendarTimeline extends Component {
   static propTypes = {
     groups: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
     items: PropTypes.oneOfType([PropTypes.array, PropTypes.object]).isRequired,
+    preventCanvasScroll: PropTypes.bool,
     sidebarWidth: PropTypes.number,
     sidebarContent: PropTypes.node,
     rightSidebarWidth: PropTypes.number,
@@ -201,6 +202,7 @@ export default class ReactCalendarTimeline extends Component {
 
   static defaultProps = {
     sidebarWidth: 150,
+    preventCanvasScroll: false,
     rightSidebarWidth: 0,
     dragSnap: 1000 * 60 * 15, // 15min
     minResizeWidth: 20,
@@ -754,6 +756,8 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   handleMouseDown = (e) => {
+    if (this.props.preventCanvasScroll) return
+
     const { topOffset } = this.state
     const { pageY } = e
     const { headerLabelGroupHeight, headerLabelHeight } = this.props
@@ -765,6 +769,8 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   handleMouseMove = (e) => {
+    if (this.props.preventCanvasScroll) return
+
     if (this.state.isDragging && !this.state.draggingItem && !this.state.resizingItem) {
       this.refs.scrollComponent.scrollLeft += this.state.dragLastPosition - e.pageX
       this.setState({dragLastPosition: e.pageX})
@@ -772,6 +778,8 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   handleMouseUp = (e) => {
+    if (this.props.preventCanvasScroll) return
+
     const { dragStartPosition } = this.state
 
     if (Math.abs(dragStartPosition - e.pageX) <= this.props.clickTolerance) {
