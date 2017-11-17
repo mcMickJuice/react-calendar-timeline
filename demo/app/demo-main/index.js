@@ -25,7 +25,7 @@ export default class App extends Component {
   constructor (props) {
     super(props)
 
-    const { groups, items } = generateFakeData()
+    const { groups, items } = generateFakeData(1, 1)
     const defaultTimeStart = moment().startOf('day').toDate()
     const defaultTimeEnd = moment().startOf('day').add(1, 'day').toDate()
 
@@ -125,52 +125,63 @@ export default class App extends Component {
   //   )
   // }
 
+  toggleTimeline = () => {
+    this.setState({
+      show: !this.state.show
+    })
+  }
+
   render () {
-    const { groups, items, defaultTimeStart, defaultTimeEnd } = this.state
+    const { groups, items, defaultTimeStart, defaultTimeEnd, show } = this.state
 
     return (
-      <Timeline groups={groups}
-                items={items}
-                keys={keys}
-                fixedHeader='fixed'
-                fullUpdate
+      <div>
+        <button onClick={this.toggleTimeline}>Toggle timeline</button>
+        <div style={{ display: show ? 'block' : 'none' }}>
+          <Timeline groups={groups}
+            items={items}
+            keys={keys}
+            fixedHeader='fixed'
+            fullUpdate
 
-                sidebarWidth={150}
-                sidebarContent={<div>Above The Left</div>}
-                rightSidebarWidth={150}
-                rightSidebarContent={<div>Above The Right</div>}
+            sidebarWidth={150}
+            sidebarContent={<div>Above The Left</div>}
+            rightSidebarWidth={150}
+            rightSidebarContent={<div>Above The Right</div>}
 
-                canMove
-                canResize='right'
-                canSelect
+            canMove
+            canResize='right'
+            canSelect
 
-                itemsSorted
-                itemTouchSendsClick={false}
-                stackItems
-                itemHeightRatio={0.75}
+            itemsSorted
+            itemTouchSendsClick={false}
+            stackItems
+            itemHeightRatio={0.75}
 
-                showCursorLine
+            showCursorLine
 
-                // resizeDetector={containerResizeDetector}
+            // resizeDetector={containerResizeDetector}
 
-                defaultTimeStart={defaultTimeStart}
-                defaultTimeEnd={defaultTimeEnd}
+            defaultTimeStart={defaultTimeStart}
+            defaultTimeEnd={defaultTimeEnd}
 
-                // itemRenderer={this.itemRenderer}
-                // groupRenderer={this.groupRenderer}
+            // itemRenderer={this.itemRenderer}
+            // groupRenderer={this.groupRenderer}
 
-                onCanvasClick={this.handleCanvasClick}
-                onCanvasContextMenu={this.handleCanvasContextMenu}
+            onCanvasClick={this.handleCanvasClick}
+            onCanvasContextMenu={this.handleCanvasContextMenu}
 
-                onItemClick={this.handleItemClick}
-                onItemSelect={this.handleItemSelect}
-                onItemContextMenu={this.handleItemContextMenu}
-                onItemMove={this.handleItemMove}
-                onItemResize={this.handleItemResize}
+            onItemClick={this.handleItemClick}
+            onItemSelect={this.handleItemSelect}
+            onItemContextMenu={this.handleItemContextMenu}
+            onItemMove={this.handleItemMove}
+            onItemResize={this.handleItemResize}
 
-                onTimeChange={this.handleTimeChange}
+            onTimeChange={this.handleTimeChange}
 
-                moveResizeValidator={this.moveResizeValidator} />
+            moveResizeValidator={this.moveResizeValidator} />
+        </div>
+      </div>
     )
   }
 }

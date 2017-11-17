@@ -92,20 +92,20 @@ export function coordinateToTimeRatio (canvasTimeStart, canvasTimeEnd, canvasWid
 
 export function calculateDimensions ({
                                        itemTimeStart,
-                                       itemTimeEnd,
-                                       isDragging,
-                                       isResizing,
-                                       canvasTimeStart,
-                                       canvasTimeEnd,
-                                       canvasWidth,
-                                       dragSnap,
-                                       dragTime,
-                                       resizingItem,
-                                       resizingEdge,
-                                       resizeTime,
-                                       fullUpdate,
-                                       visibleTimeStart,
-                                       visibleTimeEnd
+  itemTimeEnd,
+  isDragging,
+  isResizing,
+  canvasTimeStart,
+  canvasTimeEnd,
+  canvasWidth,
+  dragSnap,
+  dragTime,
+  resizingItem,
+  resizingEdge,
+  resizeTime,
+  fullUpdate,
+  visibleTimeStart,
+  visibleTimeEnd
                                      }) {
   const itemStart = (isResizing && resizingEdge === 'left' ? resizeTime : itemTimeStart)
   const itemEnd = (isResizing && resizingEdge === 'right' ? resizeTime : itemTimeEnd)
@@ -188,9 +188,9 @@ export function collision (a, b, lineHeight) {
   // var verticalMargin = (lineHeight - a.height)/2;
   var verticalMargin = 0
   return ((a.collisionLeft + EPSILON) < (b.collisionLeft + b.collisionWidth) &&
-  (a.collisionLeft + a.collisionWidth - EPSILON) > b.collisionLeft &&
-  (a.top - verticalMargin + EPSILON) < (b.top + b.height) &&
-  (a.top + a.height + verticalMargin - EPSILON) > b.top)
+    (a.collisionLeft + a.collisionWidth - EPSILON) > b.collisionLeft &&
+    (a.top - verticalMargin + EPSILON) < (b.top + b.height) &&
+    (a.top + a.height + verticalMargin - EPSILON) > b.top)
 }
 
 export function stack (items, groupOrders, lineHeight, headerHeight, force) {
@@ -348,3 +348,24 @@ export function deepObjectCompare (obj1, obj2) {
   }
   return true
 };
+
+export function firstShowingElement (elem) {
+  // https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement/offsetParent
+  // finds nearest non hidden (display none) element, effectively
+  // breaks if element is in position: fixed element
+  let parent = elem.parentElement
+  while (parent != null) {
+    let offsetParent = elem.offsetParent
+    if (offsetParent != null) {
+      return elem
+    }
+
+    if (parent.offsetParent != null) {
+      return parent
+    }
+
+    parent = parent.parentElement
+  }
+
+  return
+}
