@@ -8,7 +8,9 @@ modules
 build
 gh-pages
 
+# vscode stuff
+.vscode
 
-## vscode settings
+# code coverage
+coverage
 
-.vscode/

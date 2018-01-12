@@ -663,17 +663,32 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   selectItem = (item, clickType, e) => {
+    const time = this.timeFromEvent(e)
     if (this.state.selectedItem === item || (this.props.itemTouchSendsClick && clickType === 'touch')) {
       if (item && this.props.onItemClick) {
-        this.props.onItemClick(item, e)
+        this.props.onItemClick(item, e, time)
       }
     } else {
       this.setState({selectedItem: item})
       if (item && this.props.onItemSelect) {
-        this.props.onItemSelect(item, e)
+        this.props.onItemSelect(item, e, time)
       } else if (item === null && this.props.onItemDeselect) {
-        this.props.onItemDeselect(e)
+        this.props.onItemDeselect(e) // this isnt in the docs. Is this function even used?
       }
+    }
+  }
+
+  doubleClickItem = (item, e) => {
+    if (this.props.onItemDoubleClick) {
+      const time = this.timeFromEvent(e)
+      this.props.onItemDoubleClick(item, e, time)
+    }
+  }
+
+  contextMenuClickItem = (item, e) => {
+    if (this.props.onItemDoubleClick) {
+      const time = this.timeFromEvent(e)
+      this.props.onItemDoubleClick(item, e, time)
     }
   }
 
@@ -701,6 +716,12 @@ export default class ReactCalendarTimeline extends Component {
     time = Math.floor(time / dragSnap) * dragSnap
 
     return [row, time]
+  }
+
+  timeFromEvent = (e) => {
+    const [, time] = this.rowAndTimeFromEvent(e)
+
+    return time
   }
 
   scrollAreaClick = (e) => {
@@ -910,8 +931,8 @@ export default class ReactCalendarTimeline extends Component {
              itemSelect={this.selectItem}
              itemDrag={this.dragItem}
              itemDrop={this.dropItem}
-             onItemDoubleClick={this.props.onItemDoubleClick}
-             onItemContextMenu={this.props.onItemContextMenu}
+             onItemDoubleClick={this.doubleClickItem}
+             onItemContextMenu={this.contextMenuClickItem}
              itemResizing={this.resizingItem}
              itemResized={this.resizedItem}
              itemRenderer={this.props.itemRenderer}
