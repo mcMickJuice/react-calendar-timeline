@@ -663,14 +663,15 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   selectItem = (item, clickType, e) => {
-    const time = this.timeFromEvent(e)
     if (this.state.selectedItem === item || (this.props.itemTouchSendsClick && clickType === 'touch')) {
       if (item && this.props.onItemClick) {
+        const time = this.timeFromEvent(e)
         this.props.onItemClick(item, e, time)
       }
     } else {
       this.setState({selectedItem: item})
       if (item && this.props.onItemSelect) {
+        const time = this.timeFromEvent(e)
         this.props.onItemSelect(item, e, time)
       } else if (item === null && this.props.onItemDeselect) {
         this.props.onItemDeselect(e) // this isnt in the docs. Is this function even used?
@@ -693,13 +694,14 @@ export default class ReactCalendarTimeline extends Component {
   }
 
   rowAndTimeFromEvent = (e) => {
-    const { headerLabelGroupHeight, headerLabelHeight, dragSnap } = this.props
+    const { headerLabelGroupHeight, headerLabelHeight, dragSnap, sidebarWidth } = this.props
     const { width, groupHeights, visibleTimeStart, visibleTimeEnd } = this.state
     const lineCount = _length(this.props.groups)
 
     // get coordinates relative to the component
     const parentPosition = getParentPosition(e.currentTarget)
-    const x = e.clientX - parentPosition.x
+
+    const x = e.clientX - sidebarWidth
     const y = e.clientY - parentPosition.y
 
     // calculate the y coordinate from `groupHeights` and header heights
